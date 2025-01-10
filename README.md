@@ -1,79 +1,79 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Rank Animation Logic
 
-# Getting Started
+This document explains the animation logic for moving a user's rank from position 13 to position 10 in a leaderboard visualization.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Core Variables
+const ITEM_HEIGHT = 60; // Height of each rank item (pixels)
+const ITEM_MARGIN = 8; // Margin between items (pixels)
+const USER_RANK = 13; // Starting position
+const TARGET_RANK = 10; // Target position
+const TOTAL_RANKS = 20; // Total number of ranks in leaderboard
 
-## Step 1: Start the Metro Server
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Animation Calculation
 
-To start Metro, run the following command from the _root_ of your React Native project:
+The total movement distance is calculated using:
+const movement = (USER_RANK - TARGET_RANK - 1) (ITEM_HEIGHT + ITEM_MARGIN) 
+// (13 - 10 - 1) (60 + 8)
+// 2 68
+// = 136 pixels upward
 
-```bash
-# using npm
-npm start
 
-# OR using Yarn
-yarn start
-```
+## Visual Movement Sequence
 
-## Step 2: Start your Application
+Initial Position:
+[Rank 8]
+[Rank 9]
+[Rank 10]
+[Rank 11]
+[Rank 12]
+[USER RANK 13] <- Fixed at 68px from top
+[Rank 14]
+[Rank 15]
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+Final Position:
+[Rank 8]
+[Rank 9]
+[USER RANK 13] <- Maintains fixed position
+[Rank 10]
+[Rank 11]
+[Rank 12]
+[Rank 14]
+[Rank 15]
 
-### For Android
+## Animation Implementation
+// Main scroll animation
+Animated.timing(scrollAnim, {
+toValue: (USER_RANK - TARGET_RANK - 1) (ITEM_HEIGHT + ITEM_MARGIN),
+duration: 2000,
+useNativeDriver: true,
+}).start();
 
-```bash
-# using npm
-npm run android
 
-# OR using Yarn
-yarn android
-```
 
-### For iOS
 
-```bash
-# using npm
-npm run ios
+## Key Animation Features
 
-# OR using Yarn
-yarn ios
-```
+1. **Fixed Position**: User's rank card stays visually fixed while other ranks slide
+2. **Movement Distance**: 136 pixels (2 positions × 68 pixels per position)
+3. **Duration**: 2 seconds for complete animation
+4. **Visual Effects**:
+   - Bounce animation for transitioning ranks
+   - Scale effects for emphasis
+   - Smooth easing for natural movement
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Animation Flow
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+1. User triggers animation via "Start" button
+2. Other rank items slide downward
+3. Bounce effects activate during transition
+4. Animation completes with user at new rank position
+5. Final bounce effect for visual confirmation
 
-## Step 3: Modifying your App
+## Technical Notes
 
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- Uses React Native's Animated API
+- Implements native driver for performance
+- Maintains 60fps smooth animation
+- Handles dynamic rank positions
+- Supports variable item heights and margins
