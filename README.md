@@ -1,7 +1,5 @@
 # Rank Animation Logic
 
-This document explains the animation logic for moving a user's rank from position 13 to position 10 in a leaderboard visualization.
-
 ## Core Variables
 const ITEM_HEIGHT = 60; // Height of each rank item (pixels)
 const ITEM_MARGIN = 8; // Margin between items (pixels)
@@ -21,7 +19,8 @@ const movement = (USER_RANK - TARGET_RANK - 1) (ITEM_HEIGHT + ITEM_MARGIN)
 
 ## Visual Movement Sequence
 
-Initial Position:
+### Initial Position
+
 [Rank 8]
 [Rank 9]
 [Rank 10]
